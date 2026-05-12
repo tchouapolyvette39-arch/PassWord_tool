@@ -53,11 +53,11 @@ def check_password_strength(password):
 
     # Niveau final
     if score >= 80:
-        level = "FORT 🔒"
+        level = "FORT "
     elif score >= 50:
-        level = "MOYEN ⚠️"
+        level = "MOYEN "
     else:
-        level = "FAIBLE ❌"
+        level = "FAIBLE "
 
     return {
         "score": max(score, 0),
