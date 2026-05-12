@@ -1,33 +1,43 @@
-from generator import generer_mot_de_passe
-from checker import verifier_mot_de_passe
-from utils import demander_longueur
+# =========================
+# main.py - Interface CLI
+# =========================
 
-def menu():
+from generator import generate_password
+from checker import check_password_strength
+from utils import display_menu, clear_screen
+
+
+def main():
+
     while True:
-        print("\n=== PASSWORD TOOL ===")
-        print("1. Générer un mot de passe")
-        print("2. Tester un mot de passe")
-        print("3. Quitter")
 
-        choix = input("Choix : ")
+        display_menu()
 
-        if choix == "1":
-            longueur = demander_longueur()
-            if longueur:
-                pwd = generer_mot_de_passe(longueur)
-                print(f"Mot de passe généré : {pwd}")
+        choice = input("\nChoix : ")
 
-        elif choix == "2":
-            pwd = input("Entrer le mot de passe : ")
-            niveau, score = verifier_mot_de_passe(pwd)
-            print(f"Niveau : {niveau} (Score: {score})")
+        if choice == "1":
+            length = int(input("Longueur du mot de passe (8-20) : "))
+            password = generate_password(length)
+            print(f"\n[✔] Mot de passe généré : {password}")
 
-        elif choix == "3":
-            print("Au revoir ")
+        elif choice == "2":
+            pwd = input("Entrez le mot de passe à tester : ")
+            result = check_password_strength(pwd)
+
+            print("\n===== RESULTAT =====")
+            print(f"Score : {result['score']}/100")
+            print(f"Niveau : {result['level']}")
+            print("Feedback :")
+            for f in result['feedback']:
+                print(f"- {f}")
+
+        elif choice == "3":
+            print("Fermeture du programme...")
             break
 
         else:
             print("Choix invalide")
 
+
 if __name__ == "__main__":
-    menu()
+    main()
