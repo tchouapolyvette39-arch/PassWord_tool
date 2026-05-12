@@ -1,11 +1,12 @@
-def demander_longueur():
-    try:
-        longueur = int(input("Longueur du mot de passe : "))
-        if 8 <= longueur <= 20:
-            return longueur
-        else:
-            print(" Longueur invalide (8-20)")
-            return None
-    except:
-        print(" Entrée invalide")
-        return None
+# =========================
+# utils.py
+# =========================
+
+def display_menu():
+
+    print("\n============================")
+    print("   PASSWORD SECURITY TOOL")
+    print("============================")
+    print("1. Générer un mot de passe")
+    print("2. Tester un mot de passe")
+    print("3. Quitter")
