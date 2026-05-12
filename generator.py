@@ -1,13 +1,20 @@
+# =========================
+# generator.py
+# =========================
+
 import string
 import secrets
 
-def generer_mot_de_passe(longueur=12):
-    caracteres = (
-        string.ascii_lowercase +
-        string.ascii_uppercase +
-        string.digits +
-        string.punctuation
-    )
 
-    mot_de_passe = ''.join(secrets.choice(caracteres) for _ in range(longueur))
-    return mot_de_passe
+def generate_password(length=12):
+
+    if length < 8:
+        length = 8
+    if length > 20:
+        length = 20
+
+    characters = string.ascii_letters + string.digits + string.punctuation
+
+    password = ''.join(secrets.choice(characters) for _ in range(length))
+
+    return password
