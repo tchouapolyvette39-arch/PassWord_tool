@@ -1,34 +1,66 @@
+# =========================
+# checker.py
+# =========================
+
 import re
 
-def verifier_mot_de_passe(password):
+
+WEAK_PATTERNS = ["123", "password", "admin", "qwerty", "azerty"]
+
+
+def check_password_strength(password):
+
     score = 0
+    feedback = []
 
     # Longueur
-    if len(password) >= 8:
-        score += 1
     if len(password) >= 12:
-        score += 1
+        score += 30
+    elif len(password) >= 8:
+        score += 20
+    else:
+        feedback.append("Mot de passe trop court")
 
-    # Types de caractères
-    if re.search(r"[a-z]", password):
-        score += 1
+    # Majuscules
     if re.search(r"[A-Z]", password):
-        score += 1
+        score += 15
+    else:
+        feedback.append("Ajoutez des majuscules")
+
+    # Minuscules
+    if re.search(r"[a-z]", password):
+        score += 15
+    else:
+        feedback.append("Ajoutez des minuscules")
+
+    # Chiffres
     if re.search(r"[0-9]", password):
-        score += 1
+        score += 20
+    else:
+        feedback.append("Ajoutez des chiffres")
+
+    # Caractères spéciaux
     if re.search(r"[!@#$%^&*(),.?\":{}|<>]", password):
-        score += 1
+        score += 20
+    else:
+        feedback.append("Ajoutez des caractères spéciaux")
 
     # Motifs faibles
-    if "123" in password or "password" in password.lower():
-        score -= 1
+    for pattern in WEAK_PATTERNS:
+        if pattern in password.lower():
+            score -= 20
+            feedback.append(f"Mot interdit détecté : {pattern}")
 
-    # Résultat
-    if score <= 2:
-        niveau = "Faible"
-    elif score <= 4:
-        niveau = "Moyen"
+    # Niveau final
+    if score >= 80:
+        level = "FORT 🔒"
+    elif score >= 50:
+        level = "MOYEN ⚠️"
     else:
-        niveau = "Fort"
+        level = "FAIBLE ❌"
 
-    return niveau, score
+    return {
+        "score": max(score, 0),
+        "level": level,
+        "feedback": feedback
+    }
